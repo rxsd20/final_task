@@ -1,0 +1,12 @@
+---
+- hosts: wordpress
+  become: yes
+  gather_facts: false
+  vars:
+    mysql_root_password: "Qwer1234!"
+    mysql_user_password: "wordpressuser"
+    mysql_user: "wordpressuser"
+    mysql_db: "wordpress"
+    domain: "wordpress.loc"
+  roles:
+    - wordpress

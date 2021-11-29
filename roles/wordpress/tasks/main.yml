@@ -1,0 +1,18 @@
+---
+- name: Run install packages
+  include_tasks: install_pkgs.yml
+
+- name: Run mysql configure
+  include_tasks: mysql.yml
+
+- name: Run nginx_install
+  include_tasks: nginx.yml
+
+- name: Run php_configure
+  include_tasks: php.yml
+
+- name: Run wordpress_configure
+  include_tasks: wordpress.yml
+
+- name: Run nginx_configure
+  include_tasks: nginx_configure.yml

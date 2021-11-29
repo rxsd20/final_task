@@ -1,0 +1,54 @@
+---
+- name: add new virtual block
+  template:
+    src: wordpress.conf.j2
+    dest: /etc/nginx/conf.d/wordpress.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Create openssl private key
+  openssl_privatekey:
+    path: "/etc/ssl/nginx.key"
+    size: 2048
+    state: present
+    backup: yes
+    force: yes
+
+- name: Create openssl csr
+  openssl_csr:
+    path: "/etc/ssl/nginx.csr"
+    privatekey_path: "/etc/ssl/nginx.key"
+    country_name: ""
+    state_or_province_name: ""
+    locality_name: ""
+    organization_name: ""
+    email_address: ""
+    owner: "root"
+    common_name: "{{ domain }}"
+    state: present
+    backup: yes
+    force: yes
+
+- name: Create openssl certificate
+  openssl_certificate:
+    path: "/etc/ssl/nginx.crt"
+    privatekey_path: "/etc/ssl/nginx.key"
+    csr_path: "/etc/ssl/nginx.csr"
+    selfsigned_not_after: "+3650d"
+    provider: selfsigned
+    state: present
+    backup: yes
+    force: yes
+
+- name: restart nginx
+  systemd:
+    name: nginx
+    state: restarted
+
+- name: activate http zone firewall
+  command: firewall-cmd {{ item }}
+  with_items:
+    - --permanent --add-service=http
+    - --permanent --add-service=https
+    - --reload

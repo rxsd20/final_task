@@ -1,0 +1,63 @@
+---
+- name: systemd
+  systemd:
+    name: mysqld
+    enabled: true
+    state: started
+
+- name: change root password
+  mysql_user:
+    check_implicit_admin: yes
+    login_unix_socket: /var/lib/mysql/mysql.sock
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    name: root
+    password: "{{ mysql_root_password }}"
+    priv: '*.*:ALL,GRANT' 
+    state: present
+
+- name: Removes anonymous user account for localhost
+  mysql_user:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    name: ''
+    host: localhost
+    state: absent
+
+- name: Removes all anonymous user accounts
+  mysql_user:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    name: ''
+    host_all: yes
+    state: absent
+
+- name: Create a new database for wordpress
+  mysql_db:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    name: "{{ mysql_db }}"
+    state: present
+
+- name: Create database user wordpressuser
+  mysql_user:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    name: "{{ mysql_user }}"
+    password: "{{ mysql_user_password }}"
+    priv: 'wordpress.*:ALL,GRANT'
+    state: present
+
+###for debug
+#- name: get info databases
+#  mysql_info:
+#    login_user: root
+#    login_password: "{{ mysql_root_password }}"
+#    login_host: localhost
+#    filter:
+#      - databases
+#      - users
+#  register: db_info
+#
+#- name: info db
+#  debug: var=db_info

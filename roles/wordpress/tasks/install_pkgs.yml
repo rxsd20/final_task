@@ -1,0 +1,27 @@
+---
+- name: install packages
+  yum:
+    state: present
+    name:
+      - glibc-langpack-ru
+      - unzip
+      - mysql-server
+      - python3-PyMySQL
+      - nginx
+      - php
+      - php-common
+      - php-mbstring
+      - php-gd
+      - php-intl
+      - php-xml
+      - php-json
+      - php-mysqlnd
+      - php-fpm
+      - openssl
+
+- name: Install Required pip modules
+  pip:
+    name:
+      - PyMySQL
+    state: present
+    executable: pip3

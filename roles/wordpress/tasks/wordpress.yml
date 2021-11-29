@@ -1,0 +1,46 @@
+- name: download wordpress zip
+  get_url:
+    url: https://wordpress.org/latest.zip
+    dest: /tmp/
+
+- name: extract wordpress zip
+  unarchive:
+    src: /tmp/wordpress-5.8.2.zip
+    dest: /var/www/html/
+    owner: nginx
+    group: nginx
+    remote_src: true
+
+- name: copy file wp-config
+  copy:
+    src: /var/www/html/wordpress/wp-config-sample.php
+    dest: /var/www/html/wordpress/wp-config.php
+    remote_src: true
+
+- name: change db name
+  lineinfile:
+    dest: /var/www/html/wordpress/wp-config.php
+    regexp: "define\\( 'DB_NAME'"
+    line: "define( 'DB_NAME', '{{ mysql_db }}' );"
+    state: present
+
+- name: change db user
+  lineinfile:
+    dest: /var/www/html/wordpress/wp-config.php
+    regexp: "define\\( 'DB_USER'"
+    line: "define( 'DB_USER', '{{ mysql_user }}' );"
+    state: present
+
+- name: change db password
+  lineinfile:
+    dest: /var/www/html/wordpress/wp-config.php
+    regexp: "define\\( 'DB_PASSWORD'"
+    line: "define( 'DB_PASSWORD', '{{ mysql_user_password }}' );"
+    state: present
+
+- name: set attributes
+  file:
+    path: /var/www/html/wordpress
+    owner: nginx
+    group: nginx
+    recurse: true
