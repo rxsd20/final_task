@@ -4,7 +4,7 @@ Final task
 This vagrant creates a vm, install and deploys a stand with WordPress. In this stand, a bunch of nginx + mysql 8 + php-fpm is used. This site is accessible via the https protocol. By default, the site rises with the wordpress.loc address. In order to check, you need to add this address to hosts on the client.
 
 ## Variables
-|variables                              |Comments            |Required|
+|Variables                              |Comments            |Required|
 |---------------------------------------|--------------------|--------|
 |mysql_root_password: "Qwer1234!"       |mysql root password |yes     |
 |mysql_user_password: "wordpressuser"   |mysql user password |yes     |
