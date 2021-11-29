@@ -1,7 +1,7 @@
 Final task
 ==============
 ## Descriptions
-This vagrant creates a vm, install and deploys a stand with WordPress. In this stand, a bunch of nginx + mysql 8 + php-fpm is used. This site is accessible via the https protocol. By default, the site rises with the wordpress.loc address. In order to check, you need to add this address to hosts on the client.
+This vagrant creates a vm, install and deploys a stand with WordPress. In this stand, a bunch of nginx + mysql 8 + php-fpm is used. This site is accessible via the https protocol. By default, the site rises with the https://wordpress.loc address. In order to check, you need to add this address to hosts on the client.
 
 ## Variables
 |Variables                              |Comments            |Required|
